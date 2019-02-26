@@ -149,7 +149,7 @@ getField = VL.view (field' @f)
 setField :: forall f s a. HasField' f s a => a -> s -> s
 setField = VL.set (field' @f)
 
-instance
+instance {-# OVERLAPPABLE #-}
   ( Generic s
   , ErrorUnless field s (CollectField field (Rep s))
   , GLens' (HasTotalFieldPSym field) (Rep s) a
@@ -164,7 +164,7 @@ instance
 class (~~) (a :: k) (b :: k) | a -> b, b -> a
 instance (a ~ b) => (~~) a b
 
-instance  -- see Note [Changing type parameters]
+instance {-# OVERLAPPABLE #-}  -- see Note [Changing type parameters]
   ( HasTotalFieldP field (Rep s) ~~ 'Just a
   , HasTotalFieldP field (Rep t) ~~ 'Just b
   , HasTotalFieldP field (Rep (Indexed s)) ~~ 'Just a'
@@ -191,7 +191,7 @@ instance
 instance {-# OVERLAPPING #-} HasField_ f (Void1 a) (Void1 b) a b where
   field_ = undefined
 
-instance
+instance {-# OVERLAPPABLE #-}
   ( Generic s
   , Generic t
   , GLens  (HasTotalFieldPSym field) (Rep s) (Rep t) a b
